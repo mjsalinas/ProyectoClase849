@@ -1,22 +1,19 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import LoginScreen from "../screens/LoginScreen";
-import HomeScreen from "../screens/HomeScreen";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from '../screens/LoginScreen';
+import TabsNavigator from './TabsNavigator';
 
-
-//1. declarar tipado para pantallas y sus parametros
 export type RootStackParamList = {
-    Login: undefined,
-    Home: {email: string},
-}
-//2. crear el stack navigator el cual va a manejar la navegacion
+  Login: undefined;
+  MainTabs: { email: string };
+};
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-//3. utilizar el stack 
-export default function StackNavigator(){
-    return(
-        <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Home" component={HomeScreen} />
-        </Stack.Navigator>
-    )
+export default function StackNavigator() {
+  return (
+    <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="MainTabs" component={TabsNavigator} />
+    </Stack.Navigator>
+  );
 }

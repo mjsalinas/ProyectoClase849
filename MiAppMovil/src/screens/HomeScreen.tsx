@@ -8,6 +8,7 @@ export default function HomeScreen({route}: Props){
     const {email} = route.params;
 
     return(
+    
         <View>
             Bienvenido {email}, a Home
         </View>
