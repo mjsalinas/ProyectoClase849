@@ -14,7 +14,7 @@ export default function LoginScreen({navigation}:any) {
         try{
             const allowed = login(email);
             if (allowed) {
-                navigation.navigate('Home', {email});
+                navigation.navigate('MainTabs');
             }else{
                 console.log('no tiene acceso');
             }
