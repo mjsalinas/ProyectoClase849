@@ -2,6 +2,7 @@ import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 import ScreenWrapper from "../components/ScreenWrapper";
 import { useState } from "react";
+import { Alert } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
 import { i18n } from "../contexts/LanguageContext";
 
@@ -11,12 +12,15 @@ export default function LoginScreen({ navigation }: any) {
 
   const { login } = useAuth();
 
-  const handleLogin = () => {
-    try {
-      login(email, password);
+  const handleLogin = async () => {
+    if (!email.trim() || !password) {
+      Alert.alert("Campos requeridos", "Ingresa tu correo y contraseña.");
+      return;
+    }
+
+    const success = await login(email.trim(), password);
+    if (success) {
       navigation.navigate("MainTabs");
-    } catch (error) {
-      console.log(error);
     }
   };
 

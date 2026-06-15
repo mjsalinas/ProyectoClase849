@@ -9,9 +9,19 @@ type User = {
     pwd?: string;
 } | null;
 
+type RegisterResult = {
+    success: boolean;
+    hasSession: boolean;
+};
+
 type AuthContextType = {
     user: User | null; 
-    login: (email: string, password: string)=>  Promise<void>;
+    login: (email: string, password: string)=>  Promise<boolean>;
+    register: (
+        email: string,
+        password: string,
+        metadata?: { name?: string; phoneNumber?: string }
+    ) => Promise<RegisterResult>;
     logout: ()=> void;
 }
 
@@ -58,8 +68,11 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
         
         if (error){
             Alert.alert("Error al iniciar sesion", error.message);
+            return false;
         }
-        setUserSession(data);        
+
+        setUserSession(data);
+        return true;
     }
 
     const logout = async () => {
