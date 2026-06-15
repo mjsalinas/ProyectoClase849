@@ -41,6 +41,11 @@ export default function LoginScreen({ navigation }: any) {
       />
 
       <CustomButton title={i18n.t("signIn")} onPress={handleLogin} />
+      <CustomButton
+        title="Registrarme"
+        onPress={() => navigation.navigate("Register")}
+        variant="secondary"
+      />
     </ScreenWrapper>
   );
 }

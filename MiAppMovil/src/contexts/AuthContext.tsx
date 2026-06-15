@@ -79,13 +79,41 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
        await supabase.auth.signOut();
        setUser(null);
     };
-//to-do: implementar registro con supabase
-    const register = (email:string, password:string) => {
+    const register = async (
+        email: string,
+        password: string,
+        metadata?: { name?: string; phoneNumber?: string }
+    ): Promise<RegisterResult> => {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    ...(metadata?.name && { full_name: metadata.name }),
+                    ...(metadata?.phoneNumber && { phone: metadata.phoneNumber }),
+                },
+            },
+        });
 
+        if (error) {
+            Alert.alert("Error al registrarse", error.message);
+            return { success: false, hasSession: false };
+        }
+
+        if (data.session) {
+            setUserSession(data);
+            return { success: true, hasSession: true };
+        }
+
+        Alert.alert(
+            "Registro exitoso",
+            "Revisa tu correo para confirmar tu cuenta antes de iniciar sesión."
+        );
+        return { success: true, hasSession: false };
     };
     
     return (
-        <AuthContext.Provider value={{user, login, logout}}>
+        <AuthContext.Provider value={{user, login, register, logout}}>
             {children}
         </AuthContext.Provider>
     );
